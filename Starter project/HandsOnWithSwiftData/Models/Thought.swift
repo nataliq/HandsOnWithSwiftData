@@ -1,25 +1,17 @@
 import Foundation
+import SwiftData
 
-@Observable
+@Model
 final public class Thought {
     public var text: String
     public var creationDate: Date
 
+//    @Relationship(inverse: \Tag.thoughts)
     public var tags: [Tag]
 
-    public init(text: String, creationDate: Date = .now, tags: [Tag] = []) {
+    public init(text: String, creationDate: Date = .now) {
         self.text = text
         self.creationDate = creationDate
-        self.tags = tags
-    }
-}
-
-extension Thought: Identifiable, Hashable {
-    public static func == (lhs: Thought, rhs: Thought) -> Bool {
-        ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-         hasher.combine(ObjectIdentifier(self))
+        self.tags = []
     }
 }
