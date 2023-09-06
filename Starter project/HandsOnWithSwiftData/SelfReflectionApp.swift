@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct SelfReflectionApp: App {
@@ -7,6 +8,7 @@ struct SelfReflectionApp: App {
             MainView()
                 .tint(.purple)
         }
+        .modelContainer(for: Thought.self)
     }
 }
 

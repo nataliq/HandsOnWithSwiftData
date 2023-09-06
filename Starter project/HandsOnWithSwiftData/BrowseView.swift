@@ -1,47 +1,66 @@
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct BrowseView: View {
     @State private var searchTerm: String = ""
-
-    private var thoughts = DataStore.shared.thoughts
-
-    @State private var selectedItem: Thought?
-
+    
     var body: some View {
         NavigationStack {
-            Group {
-                if thoughts.isEmpty {
-                    EmptyView()
-                } else {
-                    List(filteredThoughts) { thought in
-                        NavigationLink(thought.text) {
-                            ThoughtEditorView(thought: thought)
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button(role: .destructive) {
-                                deleteThought(thought)
-                            } label: {
-                                Label("Archive", systemImage: "archivebox")
-                            }
-                        }
+            ThoughtsListView(searchTerm: searchTerm)
+                .searchable(
+                    text: $searchTerm,
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+        }
+    }
+}
+
+struct ThoughtsListView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var thoughts: [Thought]
+    
+    init(searchTerm: String) {
+        _thoughts = Thought.all(filteredBy: searchTerm)
+    }
+    
+    var body: some View {
+        if thoughts.isEmpty {
+            EmptyView()
+        } else {
+            List(thoughts) { thought in
+                NavigationLink(thought.text) {
+                    ThoughtEditorView(thought: thought)
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button(role: .destructive) {
+                        deleteThought(thought)
+                    } label: {
+                        Label("Archive", systemImage: "archivebox")
                     }
-                    .searchable(
-                        text: $searchTerm,
-                        placement: .navigationBarDrawer(displayMode: .automatic)
-                    )
                 }
             }
             .navigationTitle("List")
         }
     }
-
-    private var filteredThoughts: [Thought] {
-        thoughts.containingText(searchTerm)
-    }
-
+    
     private func deleteThought(_ thought: Thought) {
-        DataStore.shared.remove(thought)
+        modelContext.delete(thought)
+    }
+    
+}
+
+private extension Thought {
+    static func all(filteredBy searchTerm: String) -> Query<Thought, [Thought]> {
+        if searchTerm.isEmpty == false {
+            return Query(
+                filter: #Predicate { $0.text.localizedStandardContains(searchTerm) },
+                sort: \Thought.creationDate,
+                order: .reverse
+            )
+        } else {
+            return Query(sort: \Thought.creationDate, order: .reverse)
+        }
     }
 }
 

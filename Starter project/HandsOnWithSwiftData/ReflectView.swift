@@ -1,7 +1,10 @@
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct ReflectView: View {
+
+    @Environment(\.modelContext) private var modelContext
 
     @State private var text: String = ""
     @State private var selectedTags: [Tag] = []
@@ -34,8 +37,10 @@ struct ReflectView: View {
     }
 
     private func save() {
-        let thought = Thought(text: text, tags: selectedTags)
-        DataStore.shared.thoughts.append(thought)
+        guard shouldShowSave else { return }
+        let thought = Thought(text: text)
+        modelContext.insert(thought)
+        thought.tags = selectedTags
         
         text.removeAll()
         selectedTags.removeAll()
