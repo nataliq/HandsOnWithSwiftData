@@ -41,7 +41,7 @@ struct BrowseView: View {
     }
 
     private func deleteThought(_ thought: Thought) {
-        DataStore.shared.remove(thought)
+        DataStore.shared.removeThought(thought)
     }
 }
 

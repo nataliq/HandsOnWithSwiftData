@@ -20,7 +20,7 @@ struct TagSelectionView: View {
 
     private func saveTagFromSuggestionAndSeletIt() {
         let tag = Tag(name: suggestedTagName)
-        DataStore.shared.tags.append(tag)
+        DataStore.shared.createTag(tag)
         selectedTags.append(tag)
         suggestedTagName.removeAll()
     }
@@ -49,7 +49,7 @@ private struct TagCloud: View {
                     .onTapGesture {
                         selectedTags.append(temporaryTag)
                         
-                        DataStore.shared.tags.append(temporaryTag)
+                        DataStore.shared.createTag(temporaryTag)
                         suggestedTagName.removeAll()
                     }
             } else {

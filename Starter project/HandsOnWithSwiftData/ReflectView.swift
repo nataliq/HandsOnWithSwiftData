@@ -35,7 +35,7 @@ struct ReflectView: View {
 
     private func save() {
         let thought = Thought(text: text, tags: selectedTags)
-        DataStore.shared.thoughts.append(thought)
+        DataStore.shared.createThought(thought)
         
         text.removeAll()
         selectedTags.removeAll()
