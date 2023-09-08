@@ -41,3 +41,9 @@ Make sure the unit test compiles and examine the test result. Play around and se
   - You can try using [NSFetchedResultsController](https://developer.apple.com/documentation/coredata/nsfetchedresultscontroller) for fetching data created with `SwiftData`.
 - Try using `@Attribute` and `@Relationship` with different properties to improve the model schema.
 
+## Ideas from workshop participants
+
+- Implement all SwiftData operations in the `DataStore` instead of in the Views so that the persistence layer is isolated from the view layer.
+- Try implementing a 1:1 non-optional relationship to see if it's possible given the crash we experience when establishing a relationship between an object in a model context and a newly created one.
+- Filter thoughts for a particular tag (use predicate with relationship "contains" check).
+- Implement a "Cancel" functionality during thought editing using a throw-away context.
