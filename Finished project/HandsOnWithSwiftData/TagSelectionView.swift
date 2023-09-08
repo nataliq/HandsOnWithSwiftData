@@ -1,7 +1,10 @@
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct TagSelectionView: View {
+    @Environment(\.modelContext) private var modelContext
+    
     @State var suggestedTagName = ""
     @Binding var selectedTags: [Tag]
 
@@ -20,36 +23,40 @@ struct TagSelectionView: View {
 
     private func saveTagFromSuggestionAndSeletIt() {
         let tag = Tag(name: suggestedTagName)
-        DataStore.shared.createTag(tag)
+        modelContext.insert(tag)
         selectedTags.append(tag)
         suggestedTagName.removeAll()
     }
 }
 
 private struct TagCloud: View {
-    private var allTags: [Tag]
+    @Environment(\.modelContext) private var modelContext
+    
+    @Query private var allTags: [Tag]
     @Binding var selectedTags: [Tag]
     @Binding var suggestedTagName: String
-
-    var temporaryTag: Tag?
 
     init(suggestedTagName: Binding<String>, selectedTags: Binding<[Tag]>) {
         let searchTerm = suggestedTagName.wrappedValue
         self._suggestedTagName = suggestedTagName
-        allTags = DataStore.shared.tags.containingText(searchTerm)
+        if searchTerm.isEmpty == false {
+            _allTags = Query(
+                filter: #Predicate { $0.name.localizedStandardContains(searchTerm) }
+            )
+        } else {
+            _allTags = Query()
+        }
         self._selectedTags = selectedTags
-
-        self.temporaryTag = createNewTagSuggestionFromSearch(searchTerm)
     }
 
     var body: some View {
         FlowLayout(alignment: .center) {
-            if allTags.isEmpty, let temporaryTag {
-                TagCloudBubble(text: "New: " + temporaryTag.name, isSelected: false)
+            if allTags.isEmpty, suggestedTagName.isEmpty == false {
+                TagCloudBubble(text: "New: " + suggestedTagName, isSelected: false)
                     .onTapGesture {
-                        selectedTags.append(temporaryTag)
-                        
-                        DataStore.shared.createTag(temporaryTag)
+                        let tag = Tag(name: suggestedTagName)
+                        modelContext.insert(tag)
+                        selectedTags.append(tag)
                         suggestedTagName.removeAll()
                     }
             } else {
@@ -61,12 +68,6 @@ private struct TagCloud: View {
                 }
             }
         }
-    }
-
-    private func createNewTagSuggestionFromSearch(_ searchTerm: String) -> Tag? {
-        guard searchTerm.isEmpty == false else { return nil }
-        let tag = Tag(name: searchTerm)
-        return tag
     }
 }
 

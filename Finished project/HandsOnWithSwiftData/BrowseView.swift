@@ -1,11 +1,13 @@
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct BrowseView: View {
+    
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var searchTerm: String = ""
-
-    private var thoughts = DataStore.shared.thoughts
-
+    @Query private var thoughts: [Thought]
     @State private var selectedItem: Thought?
 
     var body: some View {
@@ -41,7 +43,7 @@ struct BrowseView: View {
     }
 
     private func deleteThought(_ thought: Thought) {
-        DataStore.shared.removeThought(thought)
+        modelContext.delete(thought)
     }
 }
 
