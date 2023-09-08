@@ -18,7 +18,6 @@
 		87225BAA2A9EAAF100C20385 /* ThoughtEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87225BA92A9EAAF100C20385 /* ThoughtEditorView.swift */; };
 		87225BAC2A9EB1A900C20385 /* TagSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87225BAB2A9EB1A900C20385 /* TagSelectionView.swift */; };
 		8747EF972AA5CD0500AD3CE0 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8747EF962AA5CD0500AD3CE0 /* Searchable.swift */; };
-		8747EF992AA5CF9F00AD3CE0 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8747EF982AA5CF9F00AD3CE0 /* DataStore.swift */; };
 		8747EF9B2AA5D02600AD3CE0 /* UndoModelChangesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8747EF9A2AA5D02600AD3CE0 /* UndoModelChangesButton.swift */; };
 		8747F6332AA5EF59003FFDB9 /* ImportModelDataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8747F6322AA5EF59003FFDB9 /* ImportModelDataButton.swift */; };
 		87A319422AA77E2800A553E8 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A319412AA77E2800A553E8 /* PersistenceController.swift */; };
@@ -48,7 +47,6 @@
 		87225BA92A9EAAF100C20385 /* ThoughtEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtEditorView.swift; sourceTree = "<group>"; };
 		87225BAB2A9EB1A900C20385 /* TagSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectionView.swift; sourceTree = "<group>"; };
 		8747EF962AA5CD0500AD3CE0 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
-		8747EF982AA5CF9F00AD3CE0 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		8747EF9A2AA5D02600AD3CE0 /* UndoModelChangesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoModelChangesButton.swift; sourceTree = "<group>"; };
 		8747F6322AA5EF59003FFDB9 /* ImportModelDataButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportModelDataButton.swift; sourceTree = "<group>"; };
 		87A319412AA77E2800A553E8 /* PersistenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
@@ -77,7 +75,6 @@
 			children = (
 				87225BA32A9E90D400C20385 /* Thought.swift */,
 				2AB6FD932AA726C8002B26DD /* Tag.swift */,
-				8747EF982AA5CF9F00AD3CE0 /* DataStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -236,7 +233,6 @@
 				8747F6332AA5EF59003FFDB9 /* ImportModelDataButton.swift in Sources */,
 				87A319422AA77E2800A553E8 /* PersistenceController.swift in Sources */,
 				87225BAA2A9EAAF100C20385 /* ThoughtEditorView.swift in Sources */,
-				8747EF992AA5CF9F00AD3CE0 /* DataStore.swift in Sources */,
 				2AF96B572A9DF6700095E3E9 /* SelfReflectionApp.swift in Sources */,
 				2AB6FD8F2AA71E77002B26DD /* ReflectView.swift in Sources */,
 				87225BA82A9EA85C00C20385 /* BrowseView.swift in Sources */,
