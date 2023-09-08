@@ -7,48 +7,71 @@ struct BrowseView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var searchTerm: String = ""
-    @Query private var thoughts: [Thought]
-    @State private var selectedItem: Thought?
-
     var body: some View {
         NavigationStack {
-            Group {
-                if thoughts.isEmpty {
-                    EmptyView()
-                } else {
-                    List(filteredThoughts) { thought in
-                        NavigationLink(thought.text) {
-                            ThoughtEditorView(thought: thought)
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button(role: .destructive) {
-                                deleteThought(thought)
-                            } label: {
-                                Label("Archive", systemImage: "archivebox")
-                            }
-                        }
+            // A workaround for the currently missing support for dynamic queries:
+            // The list view should be extracted to its own view
+            // so that we can pass the search term through the initializer.
+            // That way we can modify the @Query whenever the search changes.
+            ThoughtsListView(searchTerm: searchTerm)
+                .searchable(
+                    text: $searchTerm,
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        UndoModelChangesButton()
                     }
-                    .searchable(
-                        text: $searchTerm,
-                        placement: .navigationBarDrawer(displayMode: .automatic)
-                    )
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            UndoModelChangesButton()
-                        }
+                }
+        }
+    }
+}
+
+struct ThoughtsListView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var thoughts: [Thought]
+    
+    init(searchTerm: String) {
+        _thoughts = Thought.all(filteredBy: searchTerm)
+    }
+    
+    var body: some View {
+        if thoughts.isEmpty {
+            EmptyView()
+        } else {
+            List(thoughts) { thought in
+                NavigationLink(thought.text) {
+                    ThoughtEditorView(thought: thought)
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button(role: .destructive) {
+                        deleteThought(thought)
+                    } label: {
+                        Label("Archive", systemImage: "archivebox")
                     }
                 }
             }
             .navigationTitle("List")
         }
     }
-
-    private var filteredThoughts: [Thought] {
-        thoughts.containingText(searchTerm)
-    }
-
+    
     private func deleteThought(_ thought: Thought) {
         modelContext.delete(thought)
+    }
+    
+}
+
+private extension Thought {
+    static func all(filteredBy searchTerm: String) -> Query<Thought, [Thought]> {
+        if searchTerm.isEmpty == false {
+            return Query(
+                filter: #Predicate { $0.text.localizedStandardContains(searchTerm) },
+                sort: \Thought.creationDate,
+                order: .reverse
+            )
+        } else {
+            return Query(sort: \Thought.creationDate, order: .reverse)
+        }
     }
 }
 
