@@ -24,6 +24,8 @@ struct SelfReflectionApp: App {
 }
 
 struct MainView: View {
+    @Environment(\.modelContext) private var modelContext
+    
     var body: some View {
         TabView {
             ReflectView()
@@ -36,5 +38,19 @@ struct MainView: View {
                     Label("Browse", systemImage: "list.dash")
                 }
         }
+        .onAppear() {
+            // This is a workaround for saving the container provided
+            // by the `.modelContainer` modifier for creating an
+            // instance on the fly. If we use the other initializer
+            // that takes an injected instance we will loose the ability to provide
+            // `isUndoEnabled` that propagates to all contexts.
+            AppContainer.shared = modelContext.container
+        }
     }
+}
+
+struct AppContainer {
+    // We want to access the model container from an object
+    // that is not a SwiftUI View, for example a ModelActor.
+    static fileprivate(set) var shared: ModelContainer!
 }

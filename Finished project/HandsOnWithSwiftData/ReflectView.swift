@@ -19,6 +19,8 @@ struct ReflectView: View {
                 Section("Text") {
                     ThoughtTextField(text: $text)
                         .onSubmit(save)
+                    
+                    ImportModelDataButton()
                 }
 
                 Section("Topics") {
