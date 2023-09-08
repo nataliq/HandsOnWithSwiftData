@@ -32,6 +32,11 @@ struct BrowseView: View {
                         text: $searchTerm,
                         placement: .navigationBarDrawer(displayMode: .automatic)
                     )
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            UndoModelChangesButton()
+                        }
+                    }
                 }
             }
             .navigationTitle("List")
